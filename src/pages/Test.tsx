@@ -29,9 +29,8 @@ const Test = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       // Test complete - navigate to results
-      // For now, just go back to home
       setTimeout(() => {
-        navigate("/");
+        navigate("/results");
       }, 500);
     }
   };
