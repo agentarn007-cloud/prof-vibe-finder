@@ -38,14 +38,14 @@ const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up opacity-0" style={{ animationDelay: "0.4s" }}>
           <Button
             className="w-full sm:w-auto min-w-[200px] h-[60px] bg-[hsl(var(--neon-green))] hover:bg-[hsl(var(--neon-green))]/90 text-black font-inter font-semibold text-lg rounded-[15px] transition-all duration-300 hover:scale-105 hover:button-shadow"
-            onClick={() => window.location.href = "#test-9"}
+            onClick={() => window.location.href = "/test"}
           >
             Я после 9-го класса
           </Button>
 
           <Button
             className="w-full sm:w-auto min-w-[200px] h-[60px] bg-[hsl(var(--neon-orange))] hover:bg-[hsl(var(--neon-orange))]/90 text-black font-inter font-semibold text-lg rounded-[15px] transition-all duration-300 hover:scale-105 hover:button-shadow"
-            onClick={() => window.location.href = "#test-11"}
+            onClick={() => window.location.href = "/test"}
           >
             Я после 11-го класса
           </Button>

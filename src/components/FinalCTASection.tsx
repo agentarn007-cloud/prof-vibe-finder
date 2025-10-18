@@ -8,7 +8,7 @@ const FinalCTASection = () => {
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
     // Navigate to test
-    window.location.href = "#test";
+    window.location.href = "/test";
   };
 
   return (
