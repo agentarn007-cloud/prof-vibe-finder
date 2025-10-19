@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import TipsModal from "./TipsModal";
 import FAQModal from "./FAQModal";
 import ContactModal from "./ContactModal";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTips, setShowTips] = useState(false);
@@ -20,7 +22,8 @@ const Navbar = () => {
   }, []);
 
   const menuItems = [
-    { label: "Главная", href: "#hero", action: null },
+    { label: "Главная", href: "/", action: () => navigate("/") },
+    { label: "О проекте", href: "/about", action: () => navigate("/about") },
     { label: "Пройти тест", href: "#cta", action: null },
     { label: "FAQ", href: "#faq", action: () => setShowFAQ(true) },
     { label: "Советы", href: "#tips", action: () => setShowTips(true) },
@@ -44,7 +47,14 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <a href="#hero" className="text-2xl sm:text-3xl font-montserrat font-extrabold gradient-text">
+          <a 
+            href="/" 
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            className="text-2xl sm:text-3xl font-montserrat font-extrabold gradient-text cursor-pointer"
+          >
             ПРОФВАЙБ
           </a>
 

@@ -1,0 +1,109 @@
+@media print {
+  /* Скрыть всё кроме результатов */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Показать только карточки результатов и заголовок */
+  .print-results,
+  .print-results * {
+    visibility: visible;
+  }
+  
+  .print-results {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    transform: scale(0.65);
+    transform-origin: top left;
+  }
+  
+  /* Убрать фон и тени для печати */
+  .print-results {
+    background: white !important;
+  }
+  
+  /* Оптимизация для печати */
+  @page {
+    margin: 0.8cm;
+    size: A4 portrait;
+  }
+  
+  /* Убрать конфетти и декоративные элементы */
+  canvas {
+    display: none !important;
+  }
+  
+  /* Заголовок */
+  .print-results h1 {
+    font-size: 16px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .print-results p {
+    font-size: 9px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .print-results section {
+    padding: 3px !important;
+  }
+  
+  /* Карточки - все 4 на одной странице */
+  .print-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 6px !important;
+    padding: 8px !important;
+    font-size: 7px !important;
+  }
+  
+  /* Заголовки карточек */
+  .print-card h3 {
+    font-size: 11px !important;
+    margin-bottom: 3px !important;
+  }
+  
+  .print-card p,
+  .print-card li {
+    font-size: 7px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .print-card ul,
+  .print-card ol {
+    margin: 3px 0 !important;
+    padding-left: 10px !important;
+  }
+  
+  .print-card > div:first-child {
+    width: 30px !important;
+    height: 30px !important;
+    margin-bottom: 3px !important;
+  }
+  
+  .print-card > div:first-child span {
+    font-size: 16px !important;
+  }
+  
+  /* Показать все карточки в 2 колонки */
+  .print-results > section > div > div {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  
+  /* Убрать анимации */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  /* Убрать тени и градиенты для лучшей печати */
+  * {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    text-shadow: none !important;
+  }
+}
