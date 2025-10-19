@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import TipsModal from "./TipsModal";
+import FAQModal from "./FAQModal";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showTips, setShowTips] = useState(false);
+  const [showFAQ, setShowFAQ] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,12 +18,20 @@ const Navbar = () => {
   }, []);
 
   const menuItems = [
-    { label: "Главная", href: "#hero" },
-    { label: "Пройти тест", href: "#cta" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Советы", href: "#tips" },
-    { label: "Контакты", href: "#contact" },
+    { label: "Главная", href: "#hero", action: null },
+    { label: "Пройти тест", href: "#cta", action: null },
+    { label: "FAQ", href: "#faq", action: () => setShowFAQ(true) },
+    { label: "Советы", href: "#tips", action: () => setShowTips(true) },
+    { label: "Контакты", href: "#contact", action: null },
   ];
+
+  const handleMenuClick = (e: React.MouseEvent, item: typeof menuItems[0]) => {
+    if (item.action) {
+      e.preventDefault();
+      item.action();
+      setIsOpen(false);
+    }
+  };
 
   return (
     <nav
@@ -40,7 +52,8 @@ const Navbar = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-white hover:text-[hsl(var(--neon-green))] transition-colors duration-300 text-base font-inter"
+                onClick={(e) => handleMenuClick(e, item)}
+                className="text-white hover:text-[hsl(var(--neon-green))] transition-colors duration-300 text-base font-inter cursor-pointer"
               >
                 {item.label}
               </a>
@@ -66,8 +79,8 @@ const Navbar = () => {
               <a
                 key={item.label}
                 href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="block text-white hover:text-[hsl(var(--neon-green))] transition-colors duration-300 py-2 text-base font-inter"
+                onClick={(e) => handleMenuClick(e, item)}
+                className="block text-white hover:text-[hsl(var(--neon-green))] transition-colors duration-300 py-2 text-base font-inter cursor-pointer"
               >
                 {item.label}
               </a>
@@ -75,6 +88,9 @@ const Navbar = () => {
           </div>
         </div>
       )}
+
+      <TipsModal open={showTips} onOpenChange={setShowTips} />
+      <FAQModal open={showFAQ} onOpenChange={setShowFAQ} />
     </nav>
   );
 };
