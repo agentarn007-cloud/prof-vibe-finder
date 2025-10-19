@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import ClassSelectionModal from "./ClassSelectionModal";
 
 const FinalCTASection = () => {
   const [isShaking, setIsShaking] = useState(false);
+  const [showClassSelection, setShowClassSelection] = useState(false);
 
   const handleClick = () => {
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
-    // Navigate to test
-    window.location.href = "/test";
+    setShowClassSelection(true);
   };
 
   return (
@@ -27,6 +28,8 @@ const FinalCTASection = () => {
           Без регистрации, без смс, без буллшита
         </p>
       </div>
+
+      <ClassSelectionModal open={showClassSelection} onOpenChange={setShowClassSelection} />
     </section>
   );
 };

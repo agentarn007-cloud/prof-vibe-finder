@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ProgressBar from "@/components/ProgressBar";
 import QuestionCard from "@/components/QuestionCard";
 import LoadingAnimation from "@/components/LoadingAnimation";
@@ -7,17 +7,25 @@ import { questions } from "@/data/questions";
 
 const Test = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const grade = searchParams.get("grade");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Redirect if no grade parameter
+    if (!grade || (grade !== "9" && grade !== "11")) {
+      navigate("/");
+      return;
+    }
+
     // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [grade, navigate]);
 
   const currentQuestion = questions[currentQuestionIndex];
 

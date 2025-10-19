@@ -1,7 +1,9 @@
 import { Monitor, Paintbrush, Wrench, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const floatingIcons = [
     { Icon: Monitor, delay: "0s", position: "top-20 left-10" },
     { Icon: Paintbrush, delay: "1s", position: "top-40 right-10" },
@@ -38,14 +40,14 @@ const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up opacity-0" style={{ animationDelay: "0.4s" }}>
           <Button
             className="w-full sm:w-auto min-w-[200px] h-[60px] bg-[hsl(var(--neon-green))] hover:bg-[hsl(var(--neon-green))]/90 text-black font-inter font-semibold text-lg rounded-[15px] transition-all duration-300 hover:scale-105 hover:button-shadow"
-            onClick={() => window.location.href = "/test"}
+            onClick={() => navigate("/test?grade=9")}
           >
             Я после 9-го класса
           </Button>
 
           <Button
             className="w-full sm:w-auto min-w-[200px] h-[60px] bg-[hsl(var(--neon-orange))] hover:bg-[hsl(var(--neon-orange))]/90 text-black font-inter font-semibold text-lg rounded-[15px] transition-all duration-300 hover:scale-105 hover:button-shadow"
-            onClick={() => window.location.href = "/test"}
+            onClick={() => navigate("/test?grade=11")}
           >
             Я после 11-го класса
           </Button>
