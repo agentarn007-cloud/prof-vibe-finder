@@ -8,6 +8,18 @@ import ResourcesSection from "@/components/ResourcesSection";
 import { careerDirections, type CareerDirection } from "@/data/careerDirections";
 import "@/styles/print.css";
 
+// Функция расчета коэффициента доминирования
+function calcDominance(results: Record<string, number>) {
+  const maxVal = Math.max(...Object.values(results));
+  if (maxVal === 0) return {};
+  
+  const dominance: Record<string, number> = {};
+  for (let key in results) {
+    dominance[key] = Math.round((results[key] / maxVal) * 100);
+  }
+  return dominance;
+}
+
 const Results = () => {
   const navigate = useNavigate();
   const { width, height } = useWindowSize();
@@ -39,19 +51,20 @@ const Results = () => {
         setGrade(parsed.grade);
       }
       const counts = parsed?.counts ?? { IT: 0, Creative: 0, Social: 0, Technical: 0 };
-      const total = Math.max(0, parsed?.total ?? 0);
-      const denom = total > 0 ? total : counts.IT + counts.Creative + counts.Social + counts.Technical;
+      
+      // Рассчитываем коэффициент доминирования
+      const dominance = calcDominance(counts);
 
       const directions = ["IT", "Creative", "Social", "Technical"] as const;
       const computed = directions.map((key) => {
         const base = careerDirections[key];
-        const pct = denom > 0 ? Math.round(((counts as any)[key] / denom) * 100) : 0;
+        const pct = dominance[key] ?? 0;
         return { ...base, percentage: pct };
       });
 
-      // You can choose to sort and take top 3; here we show all four
-      // const top3 = [...computed].sort((a, b) => b.percentage - a.percentage).slice(0, 3);
-      setTopDirections(computed);
+      // Сортируем по убыванию процента для лучшего отображения
+      const sorted = [...computed].sort((a, b) => b.percentage - a.percentage);
+      setTopDirections(sorted);
     } catch {
       // If parsing fails, go home
       navigate("/");
