@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import DirectionCard from "@/components/DirectionCard";
 import ActionButtons from "@/components/ActionButtons";
 import ResourcesSection from "@/components/ResourcesSection";
-import { careerDirections } from "@/data/careerDirections";
+import { careerDirections, type CareerDirection } from "@/data/careerDirections";
 
 const Results = () => {
+  const navigate = useNavigate();
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(true);
+  const [topDirections, setTopDirections] = useState<Array<CareerDirection & { percentage: number }>>([]);
+  const [grade, setGrade] = useState<"9" | "11" | null>(null);
 
   useEffect(() => {
     // Stop confetti after 5 seconds
@@ -18,12 +22,40 @@ const Results = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Mock results - in real app, calculate from user answers
-  const topDirections = [
-    { ...careerDirections.IT, percentage: 85 },
-    { ...careerDirections.Creative, percentage: 72 },
-    { ...careerDirections.Social, percentage: 58 },
-  ];
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("pvfResults");
+      if (!raw) {
+        navigate("/");
+        return;
+      }
+      const parsed = JSON.parse(raw) as {
+        grade?: string;
+        counts?: { IT: number; Creative: number; Social: number; Technical: number };
+        total?: number;
+      };
+      if (parsed?.grade === "9" || parsed?.grade === "11") {
+        setGrade(parsed.grade);
+      }
+      const counts = parsed?.counts ?? { IT: 0, Creative: 0, Social: 0, Technical: 0 };
+      const total = Math.max(0, parsed?.total ?? 0);
+      const denom = total > 0 ? total : counts.IT + counts.Creative + counts.Social + counts.Technical;
+
+      const directions = ["IT", "Creative", "Social", "Technical"] as const;
+      const computed = directions.map((key) => {
+        const base = careerDirections[key];
+        const pct = denom > 0 ? Math.round(((counts as any)[key] / denom) * 100) : 0;
+        return { ...base, percentage: pct };
+      });
+
+      // You can choose to sort and take top 3; here we show all four
+      // const top3 = [...computed].sort((a, b) => b.percentage - a.percentage).slice(0, 3);
+      setTopDirections(computed);
+    } catch {
+      // If parsing fails, go home
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
@@ -54,9 +86,14 @@ const Results = () => {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-montserrat font-extrabold text-[#1a1a1a] mb-4">
             ТВОЙ ВАЙБ ОПРЕДЕЛЁН! 🎉
           </h1>
-          <p className="text-lg sm:text-2xl font-inter text-[#666] mb-16 sm:mb-20">
+          <p className="text-lg sm:text-2xl font-inter text-[#666] mb-3">
             Вот куда тебе стоит смотреть
           </p>
+          {grade && (
+            <p className="text-base sm:text-lg font-inter text-[#999] mb-16 sm:mb-20">
+              Результаты для {grade === "9" ? "9" : "11"}-го класса
+            </p>
+          )}
         </div>
       </section>
 

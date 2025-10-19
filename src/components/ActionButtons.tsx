@@ -11,11 +11,25 @@ const ActionButtons = () => {
   };
 
   const handleRetake = () => {
-    window.location.href = "/test";
+    try {
+      const raw = localStorage.getItem("pvfResults");
+      const grade = raw ? (JSON.parse(raw)?.grade as string | undefined) : undefined;
+      const g = grade === "11" || grade === "9" ? grade : "9";
+      window.location.href = `/test?grade=${g}`;
+    } catch {
+      window.location.href = "/test?grade=9";
+    }
   };
 
   const handleOtherLevel = () => {
-    window.location.href = "/test";
+    try {
+      const raw = localStorage.getItem("pvfResults");
+      const grade = raw ? (JSON.parse(raw)?.grade as string | undefined) : undefined;
+      const g = grade === "11" ? "9" : grade === "9" ? "11" : "11";
+      window.location.href = `/test?grade=${g}`;
+    } catch {
+      window.location.href = "/test?grade=11";
+    }
   };
 
   return (

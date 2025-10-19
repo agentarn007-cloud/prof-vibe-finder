@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import AnswerOption from "./AnswerOption";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 interface Answer {
   letter: "a" | "b" | "c" | "d";
@@ -12,11 +12,10 @@ interface QuestionCardProps {
   answers: Answer[];
   onAnswer: (answer: string) => void;
   onBack?: () => void;
-  onSkip: () => void;
   canGoBack: boolean;
 }
 
-const QuestionCard = ({ question, answers, onAnswer, onBack, onSkip, canGoBack }: QuestionCardProps) => {
+const QuestionCard = ({ question, answers, onAnswer, onBack, canGoBack }: QuestionCardProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -72,7 +71,7 @@ const QuestionCard = ({ question, answers, onAnswer, onBack, onSkip, canGoBack }
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+      <div className="flex justify-start items-center pt-6 border-t border-gray-200">
         <button
           onClick={onBack}
           disabled={!canGoBack || isTransitioning}
@@ -88,23 +87,6 @@ const QuestionCard = ({ question, answers, onAnswer, onBack, onSkip, canGoBack }
         >
           <ChevronLeft size={20} />
           Назад
-        </button>
-
-        <button
-          onClick={onSkip}
-          disabled={isTransitioning}
-          className={`
-            flex items-center gap-2 px-6 py-3 rounded-lg
-            font-inter text-base transition-all duration-300
-            ${
-              !isTransitioning
-                ? "text-gray-600 hover:text-[hsl(var(--neon-blue))] cursor-pointer"
-                : "text-gray-300 cursor-not-allowed"
-            }
-          `}
-        >
-          Пропустить
-          <ChevronRight size={20} />
         </button>
       </div>
     </div>
