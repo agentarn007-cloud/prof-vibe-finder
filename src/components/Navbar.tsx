@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import TipsModal from "./TipsModal";
 import FAQModal from "./FAQModal";
+import ContactModal from "./ContactModal";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTips, setShowTips] = useState(false);
   const [showFAQ, setShowFAQ] = useState(false);
+  const [showContact, setShowContact] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +24,7 @@ const Navbar = () => {
     { label: "Пройти тест", href: "#cta", action: null },
     { label: "FAQ", href: "#faq", action: () => setShowFAQ(true) },
     { label: "Советы", href: "#tips", action: () => setShowTips(true) },
-    { label: "Контакты", href: "#contact", action: null },
+    { label: "Контакты", href: "#contact", action: () => setShowContact(true) },
   ];
 
   const handleMenuClick = (e: React.MouseEvent, item: typeof menuItems[0]) => {
@@ -91,6 +93,7 @@ const Navbar = () => {
 
       <TipsModal open={showTips} onOpenChange={setShowTips} />
       <FAQModal open={showFAQ} onOpenChange={setShowFAQ} />
+      <ContactModal open={showContact} onOpenChange={setShowContact} />
     </nav>
   );
 };
